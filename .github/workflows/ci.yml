@@ -1,0 +1,14 @@
+name: CI
+on: [push]
+jobs:
+  do-checks:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-go@v2
+        with:
+          go-version: '^1.16.0'
+      - run: make check-fmt
+      - run: make test-ci
+      - run: bash <(curl -s https://codecov.io/bash)
+# https://proxy.golang.org/github.com/graaphscom/compoas/@v/v0.0.3.info
