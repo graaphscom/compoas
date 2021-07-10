@@ -13,7 +13,7 @@ type Info struct {
 }
 
 type Components struct {
-	SecuritySchemes map[string]SecurityScheme `json:"securitySchemes"`
+	SecuritySchemes map[string]SecurityScheme `json:"securitySchemes,omitempty"`
 	Schemas         map[string]Schema         `json:"schemas"`
 }
 
@@ -52,14 +52,14 @@ type Content struct {
 }
 
 type Parameter struct {
-	Name        string   `json:"name"`
-	Description string   `json:"description"`
-	In          string   `json:"in"`
-	Schema      Schema   `json:"schema"`
-	Required    bool     `json:"required"`
-	Style       string   `json:"style,omitempty"`
-	Explode     bool     `json:"explode,omitempty"`
-	Example     []string `json:"example,omitempty"`
+	Name        string      `json:"name"`
+	Description string      `json:"description,omitempty"`
+	In          string      `json:"in"`
+	Schema      Schema      `json:"schema"`
+	Required    bool        `json:"required,omitempty"`
+	Style       string      `json:"style,omitempty"`
+	Explode     bool        `json:"explode,omitempty"`
+	Example     interface{} `json:"example,omitempty"`
 }
 
 type SecurityRequirement map[string][]string
