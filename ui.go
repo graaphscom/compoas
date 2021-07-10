@@ -14,7 +14,7 @@ var assets embed.FS
 //go:embed index.html
 var indexTpl string
 
-func UiHandler(uiBundle SwaggerUIBundle, pathPrefix string, log func(v ...interface{})) (http.Handler, error) {
+func UIHandler(uiBundle SwaggerUIBundle, pathPrefix string, log func(v ...interface{})) (http.Handler, error) {
 	indexHTML, err := execIndexHTML(uiBundle, pathPrefix)
 	if err != nil {
 		return nil, err
