@@ -5,16 +5,16 @@ import (
 	"os"
 )
 
-func Dump(input OAS, doIndent bool, fileName string) error {
+func (oas OAS) Dump(prettyPrint bool, fileName string) error {
 	var (
 		data []byte
 		err  error
 	)
 
-	if doIndent {
-		data, err = json.MarshalIndent(input, "", "  ")
+	if prettyPrint {
+		data, err = json.MarshalIndent(oas, "", "  ")
 	} else {
-		data, err = json.Marshal(input)
+		data, err = json.Marshal(oas)
 	}
 
 	if err != nil {

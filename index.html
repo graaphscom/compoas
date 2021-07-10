@@ -39,7 +39,6 @@
     window.onload = function() {
       // Begin Swagger UI call region
       const ui = SwaggerUIBundle({
-        url: {{ .OpenapiSpecUrl }},
         dom_id: '#swagger-ui',
         deepLinking: true,
         presets: [
@@ -49,8 +48,9 @@
         plugins: [
           SwaggerUIBundle.plugins.DownloadUrl
         ],
-        layout: "StandaloneLayout"
-      });
+        layout: "StandaloneLayout",
+        ...{{ .UIBundleConfig }}
+    });
       // End Swagger UI call region
 
       window.ui = ui;

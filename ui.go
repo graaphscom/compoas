@@ -3,6 +3,7 @@ package compoas
 import (
 	"bytes"
 	"embed"
+	"encoding/json"
 	"html/template"
 	"net/http"
 )
@@ -13,8 +14,8 @@ var assets embed.FS
 //go:embed index.html
 var indexTpl string
 
-func UiHandler(openapiSpecUrl string, pathPrefix string, log func(v ...interface{})) (http.Handler, error) {
-	indexHTML, err := execIndexHTML(openapiSpecUrl, pathPrefix)
+func UiHandler(uiBundle SwaggerUIBundle, pathPrefix string, log func(v ...interface{})) (http.Handler, error) {
+	indexHTML, err := execIndexHTML(uiBundle, pathPrefix)
 	if err != nil {
 		return nil, err
 	}
@@ -34,16 +35,30 @@ func UiHandler(openapiSpecUrl string, pathPrefix string, log func(v ...interface
 	return http.StripPrefix(pathPrefix, handler), nil
 }
 
-func execIndexHTML(openapiSpecUrl string, pathPrefix string) ([]byte, error) {
+func execIndexHTML(uiBundle SwaggerUIBundle, pathPrefix string) ([]byte, error) {
 	tp, err := template.New("index").Parse(indexTpl)
 	if err != nil {
 		return nil, err
 	}
 	indexBuff := bytes.Buffer{}
-	err = tp.Execute(&indexBuff, map[string]string{"OpenapiSpecUrl": openapiSpecUrl, "PathPrefix": pathPrefix})
+	uiBundleJson, err := json.Marshal(uiBundle)
+	if err != nil {
+		return nil, err
+	}
+	err = tp.Execute(&indexBuff, map[string]interface{}{"UIBundleConfig": template.JS(uiBundleJson), "PathPrefix": pathPrefix})
 	if err != nil {
 		return nil, err
 	}
 
 	return indexBuff.Bytes(), nil
+}
+
+type SwaggerUIBundle struct {
+	Url  string               `json:"url,omitempty"`
+	Urls []SwaggerUIBundleUrl `json:"urls,omitempty"`
+}
+
+type SwaggerUIBundleUrl struct {
+	Url  string `json:"url,omitempty"`
+	Name string `json:"name,omitempty"`
 }
