@@ -23,3 +23,16 @@ func (oas OAS) Dump(prettyPrint bool, fileName string) error {
 
 	return os.WriteFile(fileName, data, 0644)
 }
+
+func (oas *OAS) Merge(source OAS) *OAS {
+	for k, v := range source.Paths {
+		oas.Paths[k] = v
+	}
+	for k, v := range source.Components.Schemas {
+		oas.Components.Schemas[k] = v
+	}
+	for k, v := range source.Components.SecuritySchemes {
+		oas.Components.SecuritySchemes[k] = v
+	}
+	return oas
+}
