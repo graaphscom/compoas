@@ -28,7 +28,7 @@ This lib provides:
 go get github.com/graaphscom/compoas
 ```
 
-## Example usage code
+## Example code
 - [example ecommerce app](internal/docs/ecommerceapp)
 
 ## Usage
