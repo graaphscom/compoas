@@ -8,7 +8,7 @@ import (
 )
 
 func TestUIHandler(t *testing.T) {
-	handler, _ := UIHandler(SwaggerUIBundle{Url: "/openapi.json"}, "/swagger-ui", log.Fatal)
+	handler, _ := UIHandler(SwaggerUIBundleConfig{Url: "/openapi.json"}, "/swagger-ui", log.Fatal)
 	handlerFunc := http.HandlerFunc(func(writer http.ResponseWriter, request *http.Request) {
 		handler.ServeHTTP(writer, request)
 	})

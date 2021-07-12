@@ -12,7 +12,7 @@ var dumpedSpecs embed.FS
 
 func main() {
 	oasHandler, err := compoas.UIHandler(
-		compoas.SwaggerUIBundle{Urls: []compoas.SwaggerUIBundleUrl{
+		compoas.SwaggerUIBundleConfig{Urls: []compoas.SwaggerUIBundleUrl{
 			{Url: "/openapi/merged.json", Name: "All"},
 			{Url: "/openapi/auth.json", Name: "Auth"},
 			{Url: "/openapi/billing.json", Name: "Billing"},

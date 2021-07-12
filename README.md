@@ -143,7 +143,7 @@ var dumpedSpecs embed.FS
 
 func main() {
 	oasHandler, err := compoas.UIHandler(
-		compoas.SwaggerUIBundle{Urls: []compoas.SwaggerUIBundleUrl{
+		compoas.SwaggerUIBundleConfig{Urls: []compoas.SwaggerUIBundleUrl{
 			{Url: "/openapi/merged.json", Name: "All"},
 			{Url: "/openapi/auth.json", Name: "Auth"},
 			{Url: "/openapi/billing.json", Name: "Billing"},
@@ -162,8 +162,8 @@ Above code configures handler for serving Swagger UI.
 
 The first argument to the `compoas.UIHandler` defines URLs where specifications are available.
 
-We want Swagger UI under route `http://localhost:8080/swagger-ui`. For that reason, the second argument to
-the `compoas.UIHandler` is `/swagger-ui`
+We want to have Swagger UI under route `http://localhost:8080/swagger-ui`. For that reason, the second argument to
+the `compoas.UIHandler` is `/swagger-ui`.
 If Swagger UI should be directly under `http://localhost:8080` we would provide `/` as the second argument.
 
 Now create a handler for static JSON specifications, configure routes and start listening:
@@ -183,7 +183,7 @@ var dumpedSpecs embed.FS
 
 func main() {
 	oasHandler, err := compoas.UIHandler(
-		compoas.SwaggerUIBundle{Urls: []compoas.SwaggerUIBundleUrl{
+		compoas.SwaggerUIBundleConfig{Urls: []compoas.SwaggerUIBundleUrl{
 			{Url: "/openapi/merged.json", Name: "All"},
 			{Url: "/openapi/auth.json", Name: "Auth"},
 			{Url: "/openapi/billing.json", Name: "Billing"},

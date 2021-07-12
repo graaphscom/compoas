@@ -14,7 +14,17 @@ var assets embed.FS
 //go:embed index.html
 var indexTpl string
 
-func UIHandler(uiBundle SwaggerUIBundle, pathPrefix string, log func(v ...interface{})) (http.Handler, error) {
+// UIHandler serves Swagger UI (index.html and all required js, css assets)
+//
+// uiBundle argument is a configuration that will be rendered inside index.html as input to the SwaggerUIBundle.
+//
+// pathPrefix argument allows for setting path under which Swagger UI will be accessible.
+// Eg If we want to have Swagger UI under http://example.com/swagger-ui, we would set pathPrefix to "/swagger-ui"
+// (leading slash, no trailing slash).
+// If no nesting is needed, set pathPrefix to "/".
+//
+// log argument is being used for logging error when http.ResponseWriter could not write a response
+func UIHandler(uiBundle SwaggerUIBundleConfig, pathPrefix string, log func(v ...interface{})) (http.Handler, error) {
 	indexHTML, err := execIndexHTML(uiBundle, pathPrefix)
 	if err != nil {
 		return nil, err
@@ -35,7 +45,7 @@ func UIHandler(uiBundle SwaggerUIBundle, pathPrefix string, log func(v ...interf
 	return http.StripPrefix(pathPrefix, handler), nil
 }
 
-func execIndexHTML(uiBundle SwaggerUIBundle, pathPrefix string) ([]byte, error) {
+func execIndexHTML(uiBundle SwaggerUIBundleConfig, pathPrefix string) ([]byte, error) {
 	tp, err := template.New("index").Parse(indexTpl)
 	if err != nil {
 		return nil, err
@@ -53,7 +63,9 @@ func execIndexHTML(uiBundle SwaggerUIBundle, pathPrefix string) ([]byte, error) 
 	return indexBuff.Bytes(), nil
 }
 
-type SwaggerUIBundle struct {
+// SwaggerUIBundleConfig reflects config to the SwaggerUIBundle.
+// https://github.com/swagger-api/swagger-ui/blob/bb21c6df52eb12cd4bdbf8c29feb500795595fa8/dist/index.html#L41
+type SwaggerUIBundleConfig struct {
 	Url  string               `json:"url,omitempty"`
 	Urls []SwaggerUIBundleUrl `json:"urls,omitempty"`
 }
